@@ -1,0 +1,18 @@
+{
+    "name": "ExcelTool.Editor",
+    "rootNamespace": "Lab5Games.ExcelTool.Editor",
+    "references": [
+        "GUID:7b0a1c1e7eb21b341b9d6d0a0ccbcc70"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
