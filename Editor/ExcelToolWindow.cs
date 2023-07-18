@@ -65,28 +65,31 @@ namespace Lab5Games.ExcelTool.Editor
 
             using(FileStream fileStream = new FileStream(_excelFilePath, FileMode.Open, FileAccess.Read))
             {
-                StringBuilder strBuilder = new StringBuilder();
-
-                DataRowCollection rowCollection = DataReader.ReadExcel(fileStream);
-
-                for (int i = 0; i < rowCollection.Count; i++)
+                using(ExcelReader excelReader = new ExcelReader(fileStream))
                 {
-                    DataRow row = rowCollection[i];
+                    StringBuilder strBuilder = new StringBuilder();
 
-                    Debug.Log($"{i}: " + string.Join(',', row.ItemArray));
+                    DataRowCollection rowCollection = excelReader.Read(0);
 
-                    strBuilder.AppendJoin(',', row.ItemArray);
-                    strBuilder.AppendLine();
+                    for(int i=0; i<rowCollection.Count; i++)
+                    {
+                        DataRow row = rowCollection[i];
+
+                        strBuilder.AppendJoin(',', row.ItemArray);
+
+                        if (i < rowCollection.Count - 1) 
+                            strBuilder.AppendLine();
+                    }
+
+
+                    string dirName = Path.GetDirectoryName(_excelFilePath);
+                    string fileName = Path.GetFileNameWithoutExtension(_excelFilePath);
+
+                    File.WriteAllText(Path.Combine(dirName, fileName) + ".csv", strBuilder.ToString());
+
+                    AssetDatabase.Refresh();
+
                 }
-
-                string dirName = Path.GetDirectoryName(_excelFilePath);
-                string fileName = Path.GetFileNameWithoutExtension(_excelFilePath);
-
-                File.WriteAllText(Path.Combine(dirName, fileName) + ".csv", strBuilder.ToString());
-
-                AssetDatabase.Refresh();
-
-                Debug.LogWarning("Csv created!");
             }
         }
 
