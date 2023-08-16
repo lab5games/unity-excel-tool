@@ -135,6 +135,7 @@ namespace Lab5Games.ExcelTool
                 }
             }
 
+            result.Add(token);
             return result.ToArray();
         }
     }
