@@ -79,7 +79,7 @@ namespace Lab5Games.ExcelTool
                 for (int i = 0; i < lines.Count; i++)
                 {
                     DataRow row = dt.NewRow();
-                    row.ItemArray = lines[i].Split(',');
+                    row.ItemArray = Split(lines[i]);
 
                     bool hasData = !row.ItemArray.All(f => f is DBNull ||
                         string.IsNullOrEmpty(f as string ?? f.ToString()));
@@ -89,6 +89,51 @@ namespace Lab5Games.ExcelTool
 
                 return dt.Rows;
             }
+        }
+
+        private string[] Split(string line, char separator = ',')
+        {
+            const char ArrayLeft = '[';
+            const char ArrayRight = ']';
+
+            bool inArray = false;
+            var token = "";
+            var result = new List<string>();
+
+            for (int i = 0; i < line.Length; i++)
+            { 
+                var c = line[i];
+
+                if(inArray)
+                {
+                    if(c == ArrayRight)
+                    {
+                        inArray = false;
+                    }
+                    else
+                    {
+                        token += c;
+                    }
+                }
+                else
+                {
+                    if(c == ArrayLeft)
+                    {
+                        inArray = true;
+                    }
+                    else if (c == separator)
+                    {
+                        result.Add(token);
+                        token = "";
+                    }
+                    else
+                    {
+                        token += c;
+                    }
+                }
+            }
+
+            return result.ToArray();
         }
     }
 }
