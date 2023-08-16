@@ -109,6 +109,7 @@ namespace Lab5Games.ExcelTool
                     if(c == ArrayRight)
                     {
                         inArray = false;
+                        token += ArrayRight;
                     }
                     else
                     {
@@ -120,6 +121,7 @@ namespace Lab5Games.ExcelTool
                     if(c == ArrayLeft)
                     {
                         inArray = true;
+                        token += ArrayLeft;
                     }
                     else if (c == separator)
                     {
