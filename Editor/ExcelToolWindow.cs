@@ -3,8 +3,8 @@ using UnityEditor;
 using System.Data;
 using System.Text;
 using System.IO;
-using System.Linq;
-using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Lab5Games.ExcelTool.Editor
 {
@@ -103,6 +103,39 @@ namespace Lab5Games.ExcelTool.Editor
         {
             if (string.IsNullOrEmpty(_excelFilePath))
                 return;
+
+            using (FileStream fileStream = new FileStream(_excelFilePath, FileMode.Open, FileAccess.Read))
+            {
+                using (ExcelReader excelReader = new ExcelReader(fileStream))
+                {
+                    DataRowCollection rowCollection = excelReader.Read(0);
+
+                    JObject jObj = new JObject();
+                    JArray rowList = new JArray();
+
+                    for(int i=0; i<rowCollection.Count; i++)
+                    {
+                        JArray rowData = new JArray();
+                        DataRow row = rowCollection[i];
+
+                        for(int j=0; j<row.ItemArray.Length; j++)
+                        {
+                            rowData.Add(row.ItemArray[j].ToString());
+                        }
+
+                        rowList.Add(rowData);
+                    }
+
+                    jObj["Rows"] = rowList;
+
+                    string dirName = Path.GetDirectoryName(_excelFilePath);
+                    string fileName = Path.GetFileNameWithoutExtension(_excelFilePath);
+
+                    File.WriteAllText(Path.Combine(dirName, fileName) + ".json", jObj.ToString());
+
+                    AssetDatabase.Refresh();
+                }
+            }
         }
     }
 }
