@@ -3,7 +3,9 @@
     "rootNamespace": "Lab5Games.ExcelTool",
     "references": [],
     "includePlatforms": [
+        "Android",
         "Editor",
+        "iOS",
         "WindowsStandalone64"
     ],
     "excludePlatforms": [],
